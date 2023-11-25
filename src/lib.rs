@@ -22,6 +22,7 @@ pub enum Language {
     Go,
     H,
     Haskell,
+    HPP,
     HTML,
     Java,
     JavaScript,
@@ -31,6 +32,7 @@ pub enum Language {
     Lisp,
     Lua,
     Makefile,
+    Markdown,
     Nix,
     OCaml,
     Perl,
@@ -39,6 +41,7 @@ pub enum Language {
     Python,
     R,
     Racket,
+    ReadMe,
     Ruby,
     Rust,
     Shell,
@@ -67,6 +70,11 @@ pub fn path_to_language(path: &Path) -> Language {
         None => return language,
     };
 
+    // we found the file already
+    if language != Language::Unknown {
+        return language;
+    }
+
     match path.extension() {
         Some(extension) => language = extension_filename(extension),
         None => return language,
@@ -76,9 +84,13 @@ pub fn path_to_language(path: &Path) -> Language {
 }
 
 fn reserved_filename(filename: &OsStr) -> Language {
-    let filename_string = filename.to_str().expect("Failed to convert to unicode.");
+    let filename_string = filename
+        .to_str()
+        .expect("Failed to convert to unicode.")
+        .to_lowercase();
 
-    match filename_string {
+    // all names have to be lowercase
+    match filename_string.as_str() {
         "cargo.toml" => Language::Cargo,
         "cargo.lock" => Language::Cargolock,
         "cmakelists.txt" => Language::CMake,
@@ -87,14 +99,18 @@ fn reserved_filename(filename: &OsStr) -> Language {
         ".dockerignore" => Language::DockerIgnore,
         ".gitignore" => Language::GitIgnore,
         "makefile" => Language::Makefile,
+        "README.md" => Language::ReadMe,
         _ => Language::Unknown,
     }
 }
 
 fn extension_filename(extension: &OsStr) -> Language {
-    let extension_string = extension.to_str().expect("Failed to convert to unicode.");
+    let extension_string = extension
+        .to_str()
+        .expect("Failed to convert to unicode.")
+        .to_lowercase();
 
-    match extension_string {
+    match extension_string.as_str() {
         "asm" => Language::Assembly,
         "bash" => Language::Bash,
         "bat" | "cmd" => Language::Batch,
@@ -107,6 +123,7 @@ fn extension_filename(extension: &OsStr) -> Language {
         "go" => Language::Go,
         "h" => Language::H,
         "hs" => Language::Haskell,
+        "hpp" => Language::HPP,
         "html" => Language::HTML,
         "java" => Language::Java,
         "js" => Language::JavaScript,
@@ -116,6 +133,7 @@ fn extension_filename(extension: &OsStr) -> Language {
         "lisp" => Language::Lisp,
         "lua" => Language::Lua,
         "nix" => Language::Nix,
+        "md" => Language::Markdown,
         "ml" => Language::OCaml,
         "perl" => Language::Perl,
         "php" => Language::PHP,
