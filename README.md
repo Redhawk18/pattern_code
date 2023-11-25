@@ -1,2 +1,3 @@
 # code_file_format
-Given a path return what type of source code file it is.
+A simple and fast way to pattern match many files by their name or extention.
+
