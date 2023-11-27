@@ -6,7 +6,7 @@ edition = "2021"
 authors = ["Redhawk18"]
 repository = "https://github.com/Redhawk18/pattern_code"
 license = "MIT"
-keywords = ["code", "file associations", "file types"]
+keywords = ["code", "file", "associations", "types"]
 categories = ["rust-patterns"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
