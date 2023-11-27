@@ -1,7 +1,13 @@
 [package]
-name = "code_file_format"
+name = "pattern_code"
+description = "Given a path patterm matched source code."
 version = "0.1.0"
 edition = "2021"
+authors = ["Redhawk18"]
+repository = "https://github.com/Redhawk18/pattern_code"
+license = "MIT"
+keywords = ["code", "file associations", "file types"]
+categories = ["rust-patterns"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
