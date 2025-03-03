@@ -62,26 +62,83 @@ pub enum Language {
     Unknown,
 }
 
-/// takes a [`Path`] and returns a [`Language`]
-pub fn path_to_language(path: &Path) -> Language {
-    let mut language = Language::Unknown;
-
-    match path.file_name() {
-        Some(filename) => language = reserved_filename(filename),
-        None => return language,
-    };
-
-    // we found the file already
-    if language != Language::Unknown {
-        return language;
+impl Language {
+    pub fn extension_as_str(&self) -> &str {
+        match self {
+            Language::Assembly => "asm",
+            Language::Shell | Language::Zsh | Language::Bash => "bash",
+            Language::Batch => "bat",
+            Language::H | Language::C => "c",
+            Language::Cargolock => "lock",
+            Language::CMake => "cmake",
+            Language::HPP | Language::CPP => "cpp",
+            Language::CSS => "css",
+            Language::DockerCompose => "yaml",
+            Language::Dockerfile | Language::DockerIgnore => "dockerfile",
+            Language::Elixir => "elixir",
+            Language::Elm => "elm",
+            Language::Env => "dotenv",
+            Language::Erlang => "erlang",
+            Language::GitIgnore => "git",
+            Language::Go => "go",
+            Language::Haskell => "haskell",
+            Language::HTML => "html",
+            Language::Java => "java",
+            Language::JavaScript => "javascript",
+            Language::Json => "json",
+            Language::Jupyter => "jupyter",
+            Language::Kotlin => "kotlin",
+            Language::Lisp => "lisp",
+            Language::Lua => "lua",
+            Language::Makefile => "makefile",
+            Language::Markdown | Language::ReadMe => "markdown",
+            Language::Nix => "nix",
+            Language::OCaml => "ocaml",
+            Language::Perl => "perl",
+            Language::PHP => "php",
+            Language::PowerShell => "powershell",
+            Language::Python => "python",
+            Language::R => "r",
+            Language::Racket => "racket",
+            Language::Ruby => "ruby",
+            Language::Rust => "rust",
+            Language::SQL => "sql",
+            Language::Svelte => "svelte",
+            Language::SVG => "svg",
+            Language::Swift => "swift",
+            Language::Text => "txt",
+            Language::Cargo | Language::Toml => "toml",
+            Language::Typescript => "typescript",
+            Language::Vue => "vue",
+            Language::XAML | Language::XML => "xml",
+            Language::Yaml => "yaml",
+            Language::Zig => "zig",
+            Language::Unknown => "unknown",
+        }
     }
+}
 
-    match path.extension() {
-        Some(extension) => language = extension_filename(extension),
-        None => return language,
-    };
+impl From<&Path> for Language {
+    fn from(value: &Path) -> Self {
+        let mut language = Language::Unknown;
 
-    language
+        match value.file_name() {
+            Some(filename) => language = reserved_filename(filename),
+            None => return language,
+        };
+
+        // we found the file already
+        if language != Language::Unknown {
+            return language;
+        }
+
+        match value.extension() {
+            Some(extension) => language = extension_filename(extension),
+            None => return language,
+        };
+
+        language
+    }
 }
 
 fn reserved_filename(filename: &OsStr) -> Language {
